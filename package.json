@@ -1,0 +1,13 @@
+{
+  "name": "smartbank",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "sass --watch src/main/webapp/resources/sass/main.scss:src/main/webapp/resources/css/main.css"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
