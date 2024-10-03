@@ -202,6 +202,7 @@ input[type=range]::-moz-range-track {
 /* estimate Styles */
 .estimate {
   background-color: #fff;
+  position: relative;
 }
 .estimate h2 {
   color: #30435C;
@@ -242,7 +243,10 @@ input[type=range]::-moz-range-track {
 .estimate-section-title {
   background-color: #F1F2F6;
   color : #30435C;
-  border-bottom: none !important
+  border-bottom: none !important;
+  /*position: absolute;*/
+  /*top: ;*/
+
 }
 
 .project-type{
@@ -278,11 +282,6 @@ input[type=range]::-moz-range-track {
 }
 
 /*# phases */
-
-#first-phase{
-  display: none;
-}
-
 #second-phase{
   gap: 2rem;
 }
@@ -298,6 +297,21 @@ input[type=range]::-moz-range-track {
 
 .inputs:focus{
   outline: none;
+  border-bottom: 1px #9B9B9B solid;
+
+  }
+.validInput{
+  color: #02AFBC !important;
 }
+
+.invalidInput{
+  color : red !important;
+  border-bottom: 1px red solid !important;
+}
+
+.hiddenPhase {
+  display: none;
+}
+
 
 /*# sourceMappingURL=main.css.map */
