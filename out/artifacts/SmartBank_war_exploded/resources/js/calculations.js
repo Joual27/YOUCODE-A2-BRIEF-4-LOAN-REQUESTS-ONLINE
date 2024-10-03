@@ -97,3 +97,4 @@ function calculateLoanDuration(loanAmount, monthlyPayment, annualInterestRate) {
         return loanDuration
     }
 }
+

@@ -54,6 +54,7 @@ function updateMonthlyPayment() {
     }
 }
 
+
 function updateLoanDuration(monthlyPayment) {
     const loanAmount = parseFloat(loanAmountInput.value);
 
@@ -97,3 +98,4 @@ function calculateLoanDuration(loanAmount, monthlyPayment, annualInterestRate) {
         return loanDuration
     }
 }
+
