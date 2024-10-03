@@ -27,49 +27,64 @@
                     </div>
                 </div>
                 <div class="forms">
-                    <form class="first-step">
-                        <div class="form-element">
-                            <label>My Project</label>
-                            <select>
-                                <option value="">I need money</option>
-                                <option value="">I am financing my used vehicle</option>
-                                <option value="">I am managing my unforeseen expenses</option>
-                                <option value="">I am financing my new vehicle</option>
-                                <option value="">I am equipping my home</option>
-                            </select>
-                        </div>
-                        <div class="form-element">
-                            <label>I am a :</label>
-                            <select>
-                                <option value="">Private sector employee</option>
-                                <option value="">Civil servant</option>
-                                <option value="">Merchant</option>
-                                <option value="">Artisan</option>
-                                <option value="">Liberal Profession</option>
-                                <option value="">Retiree</option>
-                                <option value="">None of the above</option>
-                            </select>
-                        </div>
-                        <div class="form-element">
-                            <label>Amount (IN DH)</label>
-                            <input id="loan_amount_holder" type="text" value="5000" readonly class="result-handler">
-                            <input id="loan_amount" type="range" value="5000" min="5000" max="600000">
-                        </div>
+                    <form>
+                        <div id="first-phase" class="phase">
+                            <div class="form-element">
+                                <label>My Project</label>
+                                <select>
+                                    <option value="">I need money</option>
+                                    <option value="">I am financing my used vehicle</option>
+                                    <option value="">I am managing my unforeseen expenses</option>
+                                    <option value="">I am financing my new vehicle</option>
+                                    <option value="">I am equipping my home</option>
+                                </select>
+                            </div>
+                            <div class="form-element">
+                                <label>I am a :</label>
+                                <select>
+                                    <option value="">Private sector employee</option>
+                                    <option value="">Civil servant</option>
+                                    <option value="">Merchant</option>
+                                    <option value="">Artisan</option>
+                                    <option value="">Liberal Profession</option>
+                                    <option value="">Retiree</option>
+                                    <option value="">None of the above</option>
+                                </select>
+                            </div>
+                            <div class="form-element">
+                                <label>Amount (IN DH)</label>
+                                <input id="loan_amount_holder" type="text" value="5000" readonly class="result-handler">
+                                <input id="loan_amount" type="range" value="5000" min="5000" max="600000">
+                            </div>
 
-                        <div class="form-element">
-                            <label>Duration (IN MONTHS)</label>
-                            <input id="loan_duration_holder" type="text" value="12" readonly class="result-handler" id="duration-result-handler">
-                            <input id="loan_duration" type="range" value="12" min="12" max="120">
-                        </div>
+                            <div class="form-element">
+                                <label>Duration (IN MONTHS)</label>
+                                <input id="loan_duration_holder" type="text" value="12" readonly class="result-handler" id="duration-result-handler">
+                                <input id="loan_duration" type="range" value="12" min="12" max="120">
+                            </div>
 
-                        <div class="form-element">
-                            <label>To Pay Per Month : (IN DH)</label>
-                            <input id="to_pay_per_month_holder" type="text" value="70.91" readonly class="result-handler">
-                            <input id="to_pay_per_month" type="range" value="70.91" min="70.91" max="52384.67" >
-                        </div>
+                            <div class="form-element">
+                                <label>To Pay Per Month : (IN DH)</label>
+                                <input id="to_pay_per_month_holder" type="text" value="70.91" readonly class="result-handler">
+                                <input id="to_pay_per_month" type="range" value="70.91" min="70.91" max="52384.67" >
+                            </div>
 
-                        <div class="btn-container">
-                            <button class="submit-btn">Continue <span>(no engagements)</span></button>
+                            <div class="btn-container">
+                                <button class="submit-btn">Continue <span>(no engagements)</span></button>
+                            </div>
+                        </div>
+                        <div id="second-phase" class="phase">
+                            <div class="form-element">
+                                <label >Email*</label>
+                                <input class="inputs" type="text">
+                            </div>
+                            <div class="form-element">
+                                <label >Phone Number*</label>
+                                <input class="inputs" type="text">
+                            </div>
+                            <div class="btn-container">
+                                <button class="submit-btn">Continue <span>(no engagements)</span></button>
+                            </div>
                         </div>
                     </form>
                 </div>

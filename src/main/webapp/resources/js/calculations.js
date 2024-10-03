@@ -1,58 +1,99 @@
 
-const loan_amount = document.getElementById("loan_amount");
-const loan_amount_holder = document.getElementById("loan_amount_holder");
-const loan_duration = document.getElementById("loan_duration");
-const loan_duration_holder = document.getElementById("loan_duration_holder");
-const to_pay_per_month = document.getElementById("to_pay_per_month");
-const to_pay_per_month_holder = document.getElementById("to_pay_per_month_holder");
+const loanAmountInput = document.getElementById("loan_amount");
+const loanAmountHolder = document.getElementById("loan_amount_holder");
+const loanDurationInput = document.getElementById("loan_duration");
+const loanDurationHolder = document.getElementById("loan_duration_holder");
+const toPayPerMonthInput = document.getElementById("to_pay_per_month");
+const toPayPerMonthHolder = document.getElementById("to_pay_per_month_holder");
 
-loan_amount.addEventListener("input" , (e) => {
-    loan_amount_holder.value = e.target.value;
-    updateToPayPerMonthValues();
-})
+loanAmountInput.addEventListener("input", handleLoanAmountChange);
+loanDurationInput.addEventListener("input", handleLoanDurationChange);
+toPayPerMonthInput.addEventListener("input", handleMonthlyPaymentChange);
 
-loan_duration.addEventListener("input" , (e) => {
-    loan_duration_holder.value = e.target.value;
-    loan_amount.value = e.target.value;
-    updateToPayPerMonthValues();
-})
-
-to_pay_per_month.addEventListener("input" , (e) => {
-    updateLoanDuration();
-    updateToPayPerMonthValues();
-})
-
-
-const updateToPayPerMonthValues = () => {
-    let amount_to_pay_per_month  = calculateToPayPerMonth(loan_amount.value , loan_duration_holder.value);
-    to_pay_per_month.value = amount_to_pay_per_month;
-    to_pay_per_month_holder.value = amount_to_pay_per_month;
-    to_pay_per_month.setAttribute("max",amount_to_pay_per_month.toString())
-    to_pay_per_month.setAttribute("min" , (calculateToPayPerMonth(loan_amount.value , 120).toString()))
+function handleLoanAmountChange() {
+    const loanAmount = parseFloat(loanAmountInput.value);
+    loanAmountHolder.value = loanAmount;
+    updateMonthlyPayment();
 }
 
-const updateLoanDuration = () => {
-    loan_duration.value = calculateLoanDuration(loan_amount.value , to_pay_per_month.value , 5)
-    loan_duration_holder.value = calculateLoanDuration(loan_amount.value , to_pay_per_month.value , 5)
+function handleLoanDurationChange() {
+    const loanDuration = parseInt(loanDurationInput.value);
+    loanDurationHolder.value = loanDuration;
+
+    updateMonthlyPayment();
 }
 
-const calculateToPayPerMonth = (loan_amount , loan_duration) => {
-    let monthly_interest_rate = 5 / 12 / 100;
-    let res = (loan_amount * monthly_interest_rate) /
-        (1 - Math.pow(1 + monthly_interest_rate, -loan_duration));
-    return parseFloat(res.toFixed(2));
+function handleMonthlyPaymentChange() {
+    const monthlyPayment = parseFloat(toPayPerMonthInput.value);
+    toPayPerMonthHolder.value = monthlyPayment;
+    updateLoanDuration(monthlyPayment);
 }
 
-const calculateLoanDuration = (loan_amount, monthly_payment, annual_interest_rate) => {
-    let monthly_interest_rate = annual_interest_rate / 12 / 100;
+function updateMonthlyPayment() {
+    const loanAmount = parseFloat(loanAmountInput.value);
+    const loanDuration = parseInt(loanDurationHolder.value);
 
-    let numerator = Math.log(monthly_payment / (monthly_payment - loan_amount * monthly_interest_rate));
-    let denominator = Math.log(1 + monthly_interest_rate);
+    if (!isNaN(loanAmount) && !isNaN(loanDuration) && loanDuration > 0) {
+        const monthlyPayment = calculateMonthlyPayment(loanAmount, loanDuration);
 
-    let loan_duration = numerator / denominator;
+        const minPayment = calculateMonthlyPayment(loanAmount, 120);
+        const maxPayment = calculateMonthlyPayment(loanAmount, 12);
 
-    return Math.ceil(loan_duration);
+        toPayPerMonthInput.setAttribute("min", minPayment.toFixed(2));
+        toPayPerMonthInput.setAttribute("max", maxPayment.toFixed(2));
+
+        if (monthlyPayment < minPayment) {
+            toPayPerMonthInput.value = minPayment.toFixed(2);
+        } else if (monthlyPayment > maxPayment) {
+            toPayPerMonthInput.value = maxPayment.toFixed(2);
+        } else {
+            toPayPerMonthInput.value = monthlyPayment.toFixed(2);
+        }
+
+        toPayPerMonthHolder.value = toPayPerMonthInput.value;
+    }
 }
 
+function updateLoanDuration(monthlyPayment) {
+    const loanAmount = parseFloat(loanAmountInput.value);
 
+    const minPayment = calculateMonthlyPayment(loanAmount, 120);
+    const maxPayment = calculateMonthlyPayment(loanAmount, 12);
 
+    if (monthlyPayment >= minPayment && monthlyPayment <= maxPayment) {
+        let loanDuration = calculateLoanDuration(loanAmount, monthlyPayment, 5);
+        console.log(loanDuration)
+
+        if (loanDuration > 12 && loanDuration < 12.3){
+            loanDuration = 12;
+        } else if (loanDuration > 120) {
+            loanDuration = 120;
+        }
+
+        loanDurationInput.value = loanDuration;
+        loanDurationHolder.value = loanDuration;
+    } else {
+        toPayPerMonthInput.value = monthlyPayment < minPayment ? minPayment : maxPayment;
+        toPayPerMonthHolder.value = toPayPerMonthInput.value;
+    }
+}
+
+function calculateMonthlyPayment(loanAmount, loanDuration) {
+    const monthlyInterestRate = 5 / 12 / 100;
+    const monthlyPayment = (loanAmount * monthlyInterestRate) /
+        (1 - Math.pow(1 + monthlyInterestRate, -loanDuration));
+    return parseFloat(monthlyPayment.toFixed(2));
+}
+
+function calculateLoanDuration(loanAmount, monthlyPayment, annualInterestRate) {
+    const monthlyInterestRate = annualInterestRate / 12 / 100;
+    const numerator = Math.log(monthlyPayment / (monthlyPayment - loanAmount * monthlyInterestRate));
+    const denominator = Math.log(1 + monthlyInterestRate);
+    const loanDuration = numerator / denominator;
+    if (loanDuration > 12.3){
+        return Math.ceil(loanDuration)
+    }
+    else {
+        return loanDuration
+    }
+}
