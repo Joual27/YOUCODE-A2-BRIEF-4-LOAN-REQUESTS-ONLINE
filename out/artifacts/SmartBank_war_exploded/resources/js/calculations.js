@@ -53,6 +53,3 @@ const calculateLoanDuration = (loan_amount, monthly_payment, annual_interest_rat
 
     return Math.ceil(loan_duration);
 }
-
-
-
