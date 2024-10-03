@@ -62,8 +62,9 @@ function updateLoanDuration(monthlyPayment) {
 
     if (monthlyPayment >= minPayment && monthlyPayment <= maxPayment) {
         let loanDuration = calculateLoanDuration(loanAmount, monthlyPayment, 5);
+        console.log(loanDuration)
 
-        if (loanDuration > 12 && loanDuration < 13 ){
+        if (loanDuration > 12 && loanDuration < 12.3){
             loanDuration = 12;
         } else if (loanDuration > 120) {
             loanDuration = 120;
@@ -89,5 +90,10 @@ function calculateLoanDuration(loanAmount, monthlyPayment, annualInterestRate) {
     const numerator = Math.log(monthlyPayment / (monthlyPayment - loanAmount * monthlyInterestRate));
     const denominator = Math.log(1 + monthlyInterestRate);
     const loanDuration = numerator / denominator;
-    return Math.ceil(loanDuration);
+    if (loanDuration > 12.3){
+        return Math.ceil(loanDuration)
+    }
+    else {
+        return loanDuration
+    }
 }
