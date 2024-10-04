@@ -54,6 +54,7 @@ function updateMonthlyPayment() {
     }
 }
 
+
 function updateLoanDuration(monthlyPayment) {
     const loanAmount = parseFloat(loanAmountInput.value);
 

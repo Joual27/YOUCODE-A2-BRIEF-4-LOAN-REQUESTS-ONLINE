@@ -31,24 +31,24 @@
                         <div id="first-phase" class="phase">
                             <div class="form-element">
                                 <label>My Project</label>
-                                <select>
-                                    <option value="">I need money</option>
-                                    <option value="">I am financing my used vehicle</option>
-                                    <option value="">I am managing my unforeseen expenses</option>
-                                    <option value="">I am financing my new vehicle</option>
-                                    <option value="">I am equipping my home</option>
+                                <select id="project">
+                                    <option value="personal">I need money</option>
+                                    <option value="used_vehicle">I am financing my used vehicle</option>
+                                    <option value="personal_expenses">I am managing my unforeseen expenses</option>
+                                    <option value="new_vehicle">I am financing my new vehicle</option>
+                                    <option value="home_equipment">I am equipping my home</option>
                                 </select>
                             </div>
                             <div class="form-element">
                                 <label>I am a :</label>
-                                <select>
-                                    <option value="">Private sector employee</option>
-                                    <option value="">Civil servant</option>
-                                    <option value="">Merchant</option>
-                                    <option value="">Artisan</option>
-                                    <option value="">Liberal Profession</option>
-                                    <option value="">Retiree</option>
-                                    <option value="">None of the above</option>
+                                <select id="requesterField">
+                                    <option value="private_employee">Private sector employee</option>
+                                    <option value="civil_servant">Civil servant</option>
+                                    <option value="merchant">Merchant</option>
+                                    <option value="artisan">Artisan</option>
+                                    <option value="liberal_profession">Liberal Profession</option>
+                                    <option value="retiree">Retiree</option>
+<%--                                    <option value="">None of the above</option>--%>
                                 </select>
                             </div>
                             <div class="form-element">
@@ -70,20 +70,70 @@
                             </div>
 
                             <div class="btn-container">
-                                <button class="submit-btn">Continue <span>(no engagements)</span></button>
+                                <button id="first-phase-submit" class="submit-btn">Continue <span>(no engagements)</span></button>
                             </div>
                         </div>
-                        <div id="second-phase" class="phase">
+                        <div id="second-phase" class="phase hiddenPhase">
                             <div class="form-element">
-                                <label >Email*</label>
-                                <input class="inputs" type="text">
+                                <label>Email*</label>
+                                <input id="emailInput" class="inputs" type="text">
                             </div>
                             <div class="form-element">
                                 <label >Phone Number*</label>
-                                <input class="inputs" type="text">
+                                <input id="phoneInput" class="inputs" type="text">
                             </div>
                             <div class="btn-container">
-                                <button class="submit-btn">Continue <span>(no engagements)</span></button>
+                                <button id="second-phase-submit" class="submit-btn">Continue <span>(no engagements)</span></button>
+                            </div>
+                        </div>
+                        <div id="third-phase" class="phase hiddenPhase">
+                           <div class="form-element">
+                               <label>Pronoun*</label>
+                               <div class="civilite">
+                                   <label class="radio-container">
+                                       <input type="radio" name="civilite" value="madame" checked>
+                                       <span class="custom-radio"></span>
+                                       Madame
+                                   </label>
+
+                                   <label class="radio-container">
+                                       <input type="radio" name="civilite" value="mademoiselle">
+                                       <span class="custom-radio"></span>
+                                       Mademoiselle
+                                   </label>
+
+                                   <label class="radio-container">
+                                       <input type="radio" name="civilite" value="monsieur">
+                                       <span class="custom-radio"></span>
+                                       Monsieur
+                                   </label>
+                               </div>
+                           </div>
+
+                            <div class="form-element">
+                                <label>First Name*</label>
+                                <input id="firstNameInput" class="inputs" type="text">
+                            </div>
+                            <div class="form-element">
+                                <label >Family Name*</label>
+                                <input id="familyNameInput" class="inputs" type="text">
+                            </div>
+                            <div class="form-element">
+                                <label>CIN*</label>
+                                <input id="CINInput" class="inputs" type="text">
+                            </div>
+                            <div class="form-element">
+                                <label>Birthday*</label>
+                                <input id="birthdayInput" class="inputs" type="text">
+                            </div>
+                            <div class="form-element">
+                                <label>Date Of Work*</label>
+                                <input id="dateOfWorkInput" class="inputs" type="text">
+                            </div>
+
+                            <div class="form-element">
+                                <label >Salary per month*</label>
+                                <input id="salaryPerMOnthINput" class="inputs" type="text">
                             </div>
                         </div>
                     </form>
@@ -99,38 +149,30 @@
                     </tr>
 
                     <tr style="border-bottom: none !important">
-                        <td colspan="2" class="project-type" ><strong> Personnal Loan </strong></td>
+                        <td colspan="2" class="project-type" id="projectHolder"><strong> Personnal Loan </strong></td>
                     </tr>
-                    <tr class="estimate-section-title">
-                        <td colspan="2">My Loan Details</td>
-                    </tr>
-                    <tr>
-                        <td class="estimate-keys">You are :</td>
-                        <td class="estimate-values"><strong>Fonctionnaire</strong></td>
-                    </tr>
-                    <tr>
-                        <td class="estimate-keys">Amount :</td>
-                        <td class="estimate-values"><strong>10 000 DH</strong></td>
-                    </tr>
-                    <tr>
-                        <td class="estimate-keys">Duration :</td>
-                        <td class="estimate-values"><strong>24 mois</strong></td>
-                    </tr>
-                    <tr>
-                        <td class="estimate-keys">To Pay Per Month:</td>
-                        <td class="estimate-values"><strong>469,40 DH</strong></td>
-                    </tr>
-                    <tr id="no-border">
-                        <td class="estimate-keys">Taxes:</td>
-                        <td class="estimate-values"><strong>271,50 DH</strong></td>
-                    </tr>
+
                     <img src="${pageContext.request.contextPath}/resources/imgs/shape.png" id="shape" alt="">
                 </table>
             </div>
         </div>
     </main>
 
+    <div class="errors-bg hidden">
+         <div class="errors-wrapper">
+             <div class="errors-container">
+
+             </div>
+             <hr>
+             <div class="close-errors">
+                 <button id="close-errs">Close</button>
+             </div>
+         </div>
+    </div>
+
     <script src="${pageContext.request.contextPath}/resources/js/calculations.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/validations.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/phasesHandling.js"></script>
 
 </body>
 </html>
