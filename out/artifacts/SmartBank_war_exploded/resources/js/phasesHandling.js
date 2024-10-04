@@ -2,6 +2,7 @@ const submitSecondPhaseBtn = document.getElementById('second-phase-submit')
 const submitFirstPhaseBtn = document.getElementById('first-phase-submit')
 const firstPhaseInterface = document.getElementById('first-phase')
 const secondPhaseInterface = document.getElementById('second-phase')
+const thirdPhaseInterface = document.getElementById('third-phase')
 const project = document.getElementById('project');
 const projectHolder = document.getElementById('projectHolder');
 const requesterField = document.getElementById('requesterField');
@@ -48,13 +49,14 @@ submitSecondPhaseBtn.addEventListener('click' , (e) => {
     }
 
     if (errors.length > 0){
-        errors.map(e => {
-            console.log(e)
-        })
+        fetchValidationErrors(errors);
     }
     else{
-        phase = 2;
-        console.log(phase)
+        loanRequestData.email = emailInput.value;
+        loanRequestData.phoneNumber = phoneInput.value;
+        phase = 3;
+        appendSecondPhaseDataToEstimate();
+        handlePhases();
     }
 })
 
@@ -74,16 +76,32 @@ submitFirstPhaseBtn.addEventListener('click' , (e) => {
 
 
 const handlePhases = () => {
-    if (phase == 2){
-        firstPhaseInterface.classList.add('hiddenPhase')
-        secondPhaseInterface.classList.remove('hiddenPhase')
+    const toggleClass = (element, className, shouldAdd) => {
+        if (shouldAdd && !element.classList.contains(className)) {
+            element.classList.add(className);
+        } else if (!shouldAdd && element.classList.contains(className)) {
+            element.classList.remove(className);
+        }
+    };
+
+    if (phase === 2) {
+        toggleClass(firstPhaseInterface, 'hiddenPhase', true);
+        toggleClass(secondPhaseInterface, 'hiddenPhase', false);
+        toggleClass(thirdPhaseInterface, 'hiddenPhase', true);
         appendFirstPhaseDataToEstimate();
     }
-    else if(phase == 1){
-        secondPhaseInterface.classList.add('hiddenPhase')
-        firstPhaseInterface.classList.remove('hiddenPhase')
+    else if (phase === 1) {
+        toggleClass(firstPhaseInterface, 'hiddenPhase', false);
+        toggleClass(secondPhaseInterface, 'hiddenPhase', true);
+        toggleClass(thirdPhaseInterface, 'hiddenPhase', true);
     }
-}
+    else if (phase === 3) {
+        toggleClass(firstPhaseInterface, 'hiddenPhase', true);
+        toggleClass(secondPhaseInterface, 'hiddenPhase', true);
+        toggleClass(thirdPhaseInterface, 'hiddenPhase', false);
+    }
+};
+
 
 
 project.addEventListener('change' , (e) => {
@@ -140,6 +158,46 @@ const appendFirstPhaseDataToEstimate = () => {
     estimateTable.insertAdjacentHTML('beforeend', rows);
 };
 
+const appendSecondPhaseDataToEstimate = () => {
+    const { email, phoneNumber } = loanRequestData;
+
+    const projectHolderRow = document.getElementById('projectHolder').parentNode;
+
+    const infosSectionTitle = document.createElement('tr');
+    const title = document.createElement('td');
+    title.colSpan = 2;
+    title.classList.add('estimate-section-title');
+    title.textContent = 'My project';
+    infosSectionTitle.appendChild(title);
+
+    const emailData = document.createElement('tr');
+    const emailTitle = document.createElement('td');
+    const emailValue = document.createElement('td');
+    emailTitle.classList.add('estimate-keys');
+    emailTitle.textContent = 'Email:';
+    emailValue.classList.add('estimate-values');
+    emailValue.innerHTML = `<strong>${email}</strong>`;
+
+    emailData.appendChild(emailTitle);
+    emailData.appendChild(emailValue);
+
+
+    const phoneData = document.createElement('tr');
+    const phoneTitle = document.createElement('td');
+    const phoneValue = document.createElement('td');
+    phoneTitle.classList.add('estimate-keys');
+    phoneTitle.textContent = 'Phone:';
+    phoneValue.classList.add('estimate-values');
+    phoneValue.innerHTML = `<strong>${phoneNumber}</strong>`;
+
+    phoneData.appendChild(phoneTitle);
+    phoneData.appendChild(phoneValue);
+
+    projectHolderRow.after(phoneData);
+    projectHolderRow.after(emailData);
+    projectHolderRow.after(infosSectionTitle);
+};
+
 
 
 const convertRequesterField = (field) => {
@@ -159,5 +217,21 @@ const convertRequesterField = (field) => {
     }
 }
 
+const fetchValidationErrors = (errors) => {
+    const errorsContainer = document.querySelector('.errors-container');
+    const errorsView = document.querySelector('.errors-bg')
+    errors.map(e => {
+        errorsContainer.innerHTML += `
+              <div class="error">
+                     <div class="point"></div>
+                     <p>${e}</p>
+              </div>
+        `
+    })
+    errorsView.classList.remove('hidden');
 
-
+    setTimeout(() => {
+        errorsView.classList.add('hidden')
+        errorsContainer.innerHTML = '';
+    } , 2500)
+}

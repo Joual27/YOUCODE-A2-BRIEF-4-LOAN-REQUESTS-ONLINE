@@ -86,6 +86,56 @@
                                 <button id="second-phase-submit" class="submit-btn">Continue <span>(no engagements)</span></button>
                             </div>
                         </div>
+                        <div id="third-phase" class="phase hiddenPhase">
+                           <div class="form-element">
+                               <label>Pronoun*</label>
+                               <div class="civilite">
+                                   <label class="radio-container">
+                                       <input type="radio" name="civilite" value="madame" checked>
+                                       <span class="custom-radio"></span>
+                                       Madame
+                                   </label>
+
+                                   <label class="radio-container">
+                                       <input type="radio" name="civilite" value="mademoiselle">
+                                       <span class="custom-radio"></span>
+                                       Mademoiselle
+                                   </label>
+
+                                   <label class="radio-container">
+                                       <input type="radio" name="civilite" value="monsieur">
+                                       <span class="custom-radio"></span>
+                                       Monsieur
+                                   </label>
+                               </div>
+                           </div>
+
+                            <div class="form-element">
+                                <label>First Name*</label>
+                                <input id="firstNameInput" class="inputs" type="text">
+                            </div>
+                            <div class="form-element">
+                                <label >Family Name*</label>
+                                <input id="familyNameInput" class="inputs" type="text">
+                            </div>
+                            <div class="form-element">
+                                <label>CIN*</label>
+                                <input id="CINInput" class="inputs" type="text">
+                            </div>
+                            <div class="form-element">
+                                <label>Birthday*</label>
+                                <input id="birthdayInput" class="inputs" type="text">
+                            </div>
+                            <div class="form-element">
+                                <label>Date Of Work*</label>
+                                <input id="dateOfWorkInput" class="inputs" type="text">
+                            </div>
+
+                            <div class="form-element">
+                                <label >Salary per month*</label>
+                                <input id="salaryPerMOnthINput" class="inputs" type="text">
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -101,15 +151,24 @@
                     <tr style="border-bottom: none !important">
                         <td colspan="2" class="project-type" id="projectHolder"><strong> Personnal Loan </strong></td>
                     </tr>
-<%--                    <div id="second-phase-data-holder"></div>--%>
-<%--                    <div id="first-phase-data-holder">--%>
-<%--                 --%>
-<%--                    </div>--%>
+
                     <img src="${pageContext.request.contextPath}/resources/imgs/shape.png" id="shape" alt="">
                 </table>
             </div>
         </div>
     </main>
+
+    <div class="errors-bg hidden">
+         <div class="errors-wrapper">
+             <div class="errors-container">
+
+             </div>
+             <hr>
+             <div class="close-errors">
+                 <button id="close-errs">Close</button>
+             </div>
+         </div>
+    </div>
 
     <script src="${pageContext.request.contextPath}/resources/js/calculations.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/validations.js"></script>

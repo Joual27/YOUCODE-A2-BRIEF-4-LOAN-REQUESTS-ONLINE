@@ -4,6 +4,10 @@
   box-sizing: border-box;
 }
 
+.hidden{
+  display: none !important;
+}
+
 body {
   width: 1000px;
   margin-inline: auto;
@@ -313,5 +317,144 @@ input[type=range]::-moz-range-track {
   display: none;
 }
 
+/*# errors */
+
+
+
+.errors-bg{
+  position: absolute;
+  top : 0 ;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(39, 61, 80, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.errors-wrapper{
+  width: 500px;
+  border-radius: .5rem;
+  background-color: #fff;
+  /*padding-block: ;*/
+  padding: 0;
+  animation: fall 0.75s ease-out forwards;
+}
+
+.errors-container{
+  width: 95%;
+  margin-inline: auto;
+  padding-block: 1rem;
+  padding-inline: 1.25rem;
+  background-color: #fbd0d5;
+  border-color: #f9bdc4;
+  margin-block: 1rem;
+  border-radius: .25rem;
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+}
+
+
+.error{
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  color: #7a0a17;
+}
+
+.point{
+  width: 5px;
+  height: 5px;
+  background-color: #7a0a17;
+  border-radius: 50%;
+}
+
+
+.close-errors{
+  padding: 1rem .9rem ;
+  display: flex;
+  justify-content: end;
+}
+
+hr{
+  border: none;
+  height: .1rem;
+  background-color: rgba(155,155,155,0.2);
+}
+
+#close-errs{
+  width: 85px;
+  height: 41px;
+  background-color: #02AFBC;
+  color: white;
+  border: none;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor : pointer;
+}
+#close-errs:hover{
+  background-color: #009cb0;
+}
+
+
+@keyframes fall {
+  0% {
+    transform: translateY(-200px);
+    opacity: 0;
+  }
+  100% {
+    transform:  translateY(0);
+    opacity: 1;
+  }
+}
+
+/*# Custom radios  */
+
+.radio-container {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 15px;
+  cursor: pointer;
+  color: #333;
+  font-weight: 400;
+}
+
+.radio-container input[type="radio"] {
+  display: none;
+}
+
+.custom-radio {
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  border: 2px solid #00bfc9;
+  margin-right: 5px;
+  display: inline-block;
+  position: relative;
+}
+
+.radio-container input[type="radio"]:checked + .custom-radio {
+  background-color: #fff;
+}
+
+.custom-radio::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #00bfc9;
+  display: none;
+}
+
+.radio-container input[type="radio"]:checked + .custom-radio::after {
+  display: block;
+}
+
 
 /*# sourceMappingURL=main.css.map */
+
