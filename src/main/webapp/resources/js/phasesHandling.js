@@ -1,12 +1,24 @@
 const submitSecondPhaseBtn = document.getElementById('second-phase-submit')
 const submitFirstPhaseBtn = document.getElementById('first-phase-submit')
+const submitThirdPhaseBtn = document.getElementById('third-phase-submit')
 const firstPhaseInterface = document.getElementById('first-phase')
 const secondPhaseInterface = document.getElementById('second-phase')
 const thirdPhaseInterface = document.getElementById('third-phase')
 const project = document.getElementById('project');
 const projectHolder = document.getElementById('projectHolder');
 const requesterField = document.getElementById('requesterField');
-const estimateTable = document.querySelector('estimate-table')
+const firstStep = document.getElementById('step1')
+const secondStep = document.getElementById('step2')
+const thirdStep = document.getElementById('step3')
+
+const pronounValue = document.querySelector('input[name="civilite"]:checked').value;
+const firstNameInput = document.getElementById('firstNameInput')
+const familyNameInput = document.getElementById('familyNameInput')
+const CINInput = document.getElementById('CINInput')
+const birthdayInput = document.getElementById('birthdayInput')
+const dateOfWorkInput = document.getElementById('dateOfWorkInput')
+const salaryPerMonthInput = document.getElementById('salaryPerMonthInput')
+const termsInput = document.getElementById('termsInput')
 
 const firstPhaseDataHolder = document.getElementById('first-phase-data-holder');
 
@@ -27,6 +39,31 @@ const loanRequestData = {
     dateOfWork : '',
     salaryPerMonth : 0
 }
+
+
+const clearRequestData = () => {
+    loanRequestData.project = '';
+    loanRequestData.requesterField = '';
+    loanRequestData.amount = 0;
+    loanRequestData.numberOfMonths = 0;
+    loanRequestData.toPayPerMonth = 0;
+    loanRequestData.tax = 0;
+    loanRequestData.email = '';
+    loanRequestData.phoneNumber = '';
+    loanRequestData.pronoun = '';
+    loanRequestData.firstName = '';
+    loanRequestData.lastName = '';
+    loanRequestData.CIN = '';
+    loanRequestData.birthday = '';
+    loanRequestData.dateOfWork = '';
+    loanRequestData.salaryPerMonth = 0;
+};
+
+const clearSecondStepData = () => {
+    loanRequestData.email = '';
+    loanRequestData.phoneNumber = '';
+};
+
 
 let phase = 1;
 
@@ -54,6 +91,7 @@ submitSecondPhaseBtn.addEventListener('click' , (e) => {
     else{
         loanRequestData.email = emailInput.value;
         loanRequestData.phoneNumber = phoneInput.value;
+        handleActiveStep(3)
         phase = 3;
         appendSecondPhaseDataToEstimate();
         handlePhases();
@@ -70,7 +108,10 @@ submitFirstPhaseBtn.addEventListener('click' , (e) => {
     loanRequestData.toPayPerMonth = toPayPerMonthHolder.value;
     loanRequestData.tax = loanRequestData.amount * 0.022;
     phase = 2 ;
+    handleActiveStep(2)
     handlePhases();
+    appendFirstPhaseDataToEstimate();
+
 })
 
 
@@ -88,7 +129,6 @@ const handlePhases = () => {
         toggleClass(firstPhaseInterface, 'hiddenPhase', true);
         toggleClass(secondPhaseInterface, 'hiddenPhase', false);
         toggleClass(thirdPhaseInterface, 'hiddenPhase', true);
-        appendFirstPhaseDataToEstimate();
     }
     else if (phase === 1) {
         toggleClass(firstPhaseInterface, 'hiddenPhase', false);
@@ -128,7 +168,7 @@ project.addEventListener('change' , (e) => {
 
 const appendFirstPhaseDataToEstimate = () => {
     const rows = `
-        <tr class="estimate-section-title">
+        <tr id="loan_details_title" class="estimate-section-title">
             <td colspan="2">My Loan Details</td>
         </tr>
         <tr>
@@ -167,7 +207,8 @@ const appendSecondPhaseDataToEstimate = () => {
     const title = document.createElement('td');
     title.colSpan = 2;
     title.classList.add('estimate-section-title');
-    title.textContent = 'My project';
+    infosSectionTitle.setAttribute('id' , 'contact_infos_title')
+    title.textContent = 'Contact Infos';
     infosSectionTitle.appendChild(title);
 
     const emailData = document.createElement('tr');
@@ -235,3 +276,174 @@ const fetchValidationErrors = (errors) => {
         errorsContainer.innerHTML = '';
     } , 2500)
 }
+
+
+submitThirdPhaseBtn.addEventListener('click' , (e) => {
+    e.preventDefault();
+    let errs = [];
+
+    if (firstNameInput.value.trim() === '' || familyNameInput.value.trim() === '' || CINInput.value.trim() === '' || birthdayInput.value.trim() === '' || dateOfWorkInput.value.trim() === '' || salaryPerMonthInput.value.trim() === ''){
+        errs.push('All Fields Are required ')
+    }
+    else{
+        if (validateInput(CINInput.value , 'CIN') !== ''){
+            errs.push('INVALID CIN FORMAT (XX - 123456)')
+        }
+        if (validateInput(birthdayInput.value , 'date') !== ''){
+            errs.push('INVALID BIRTHDAY FORMAT !')
+        }
+        else if(!validateBirthdayDate(birthdayInput.value)){
+            errs.push('Minimum required age is 18')
+        }
+        if (validateInput(dateOfWorkInput.value , 'date') !== ''){
+            errs.push('INVALID DATE OF WORK FORMAT !')
+        }
+        if (salaryPerMonthInput.value < 0){
+            errs.push("SALARY CAN'T BE NEGATIVE VALUE !")
+        }
+        if (!termsInput.checked){
+            errs.push("PLEASE AGREE ON TERMS TO PROCEED !")
+        }
+    }
+
+    if (errs.length > 0){
+        fetchValidationErrors(errs);
+    }
+    else{
+        loanRequestData.pronoun = pronounValue;
+        loanRequestData.firstName = firstNameInput.value;
+        loanRequestData.lastName = familyNameInput.value;
+        loanRequestData.birthday = convertToDate(birthdayInput.value)
+        loanRequestData.dateOfWork = convertToDate(dateOfWork.value)
+        loanRequestData.CIN  = CINInput.value;
+        loanRequestData.salaryPerMonth = salaryPerMonthInput.value;
+        console.log('clean data' + Object.values(loanRequestData))
+    }
+})
+
+
+
+const validateBirthdayDate = (birthday) => {
+    let enteredDate = convertToDate(birthday)
+    let currentDate = new Date()
+
+    currentDate.setHours(0, 0, 0, 0);
+    enteredDate.setHours(0, 0, 0, 0);
+
+    let diffInMs = currentDate - enteredDate;
+
+    let diffInYears = diffInMs / (1000 * 60 * 60 * 24 * 365.25);
+
+    return diffInYears >= 18;
+}
+
+
+const convertToDate = (target) => {
+    let [d , m , y] = target.split('-').map(Number)
+
+    return new Date(y , m-1 , d)
+}
+
+
+const handleActiveStep = (currentStep) => {
+
+    if (currentStep === 1){
+        firstStep.classList.add('active-step')
+        if (firstStep.classList.contains('previous-step')){
+            firstStep.classList.remove('previous-step')
+        }
+        if (secondStep.classList.contains('previous-step')){
+            secondStep.classList.remove('previous-step')
+        }
+        if (secondStep.classList.contains('clickable-step')){
+            secondStep.classList.remove('clickable-step')
+        }
+        if (secondStep.classList.contains('active-step')){
+            secondStep.classList.remove('active-step')
+        }
+        if (thirdStep.classList.contains('clickable-step')){
+            thirdStep.classList.remove('clickable-step')
+        }
+        if (thirdStep.classList.contains('active-step')){
+            thirdStep.classList.remove('active-step')
+        }
+    }
+    else if (currentStep === 2){
+        secondStep.classList.add('active-step')
+        if (secondStep.classList.contains('previous-step')){
+            secondStep.classList.remove('previous-step')
+        }
+        if (firstStep.classList.contains('active-step')){
+            firstStep.classList.remove('active-step')
+        }
+        if (thirdStep.classList.contains('active-step')){
+            thirdStep.classList.remove('active-step')
+        }
+        if (thirdStep.classList.contains('clickable-step')){
+            thirdStep.classList.remove('clickable-step')
+        }
+        firstStep.classList.add('previous-step')
+    }
+    else if (currentStep === 3){
+        thirdStep.classList.add('active-step')
+        if (firstStep.classList.contains('active-step')){
+            firstStep.classList.remove('active-step')
+        }
+        if (secondStep.classList.contains('active-step')){
+            secondStep.classList.remove('active-step')
+        }
+        secondStep.classList.add('clickable-step')
+        firstStep.classList.add('previous-step')
+        secondStep.classList.add('previous-step')
+    }
+}
+
+
+
+
+firstStep.addEventListener('click' , () => {
+    phase = 1;
+    handlePhases()
+    removeFirstPhaseDataFromEstimate()
+    removeSecondPhaseDataFromEstimate()
+    handleActiveStep(1)
+})
+
+secondStep.addEventListener('click' , () => {
+    if (phase === 3){
+        phase = 2;
+        handlePhases()
+        handleActiveStep(2)
+        removeSecondPhaseDataFromEstimate();
+        clearSecondStepData()
+    }
+})
+
+const removeFirstPhaseDataFromEstimate = () => {
+    const estimate = document.querySelector('.estimate');
+    const sectionTitle = estimate.querySelector('#loan_details_title');
+
+    if (sectionTitle) {
+        let elementToDelete = sectionTitle;
+        for (let i = 0; i < 6; i++) {
+            const nextElement = elementToDelete.nextElementSibling;
+            elementToDelete.remove();
+            elementToDelete = nextElement;
+        }
+    }
+}
+
+const removeSecondPhaseDataFromEstimate = () => {
+    const estimate = document.querySelector('.estimate');
+    const sectionTitle = estimate.querySelector('#contact_infos_title');
+
+    if (sectionTitle) {
+        let elementToDelete = sectionTitle;
+        for (let i = 0; i < 3; i++) {
+            const nextElement = elementToDelete.nextElementSibling;
+            elementToDelete.remove();
+            elementToDelete = nextElement;
+        }
+    }
+};
+

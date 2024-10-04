@@ -63,8 +63,13 @@ body {
   justify-content: center;
   align-items: center;
   padding-block: 12px;
+
+}
+
+.clickable-step{
   cursor: pointer;
 }
+
 .step h4 {
   font-size: 0.875rem;
   font-weight: 600;
@@ -454,6 +459,32 @@ hr{
 .radio-container input[type="radio"]:checked + .custom-radio::after {
   display: block;
 }
+
+.terms{
+  font-size: .85rem;
+}
+
+.terms span{
+  text-decoration: underline;
+}
+
+#terms-container{
+  flex-direction: row !important;
+  gap: 7px !important;
+  align-items: start;
+  color: #30435C;
+}
+
+#terms-container input{
+  margin-top: 3px;
+}
+
+/*# Third Phase */
+
+.previous-step {
+  background-color: #02AFBC !important;
+}
+
 
 
 /*# sourceMappingURL=main.css.map */

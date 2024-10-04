@@ -13,15 +13,15 @@
         <div class="wrapper">
             <div class="loan-process">
                 <div class="steps">
-                    <div class="step active-step">
+                    <div class="step active-step clickable-step" id="step1">
                         <h1>1</h1>
                         <h4>Do a Simulation</h4>
                     </div>
-                    <div class="step">
+                    <div class="step" id="step2">
                         <h1>2</h1>
                         <h4>My Credentials</h4>
                     </div>
-                    <div class="step">
+                    <div class="step" id="step3">
                         <h1>3</h1>
                         <h4>My Personal Infos</h4>
                     </div>
@@ -91,21 +91,21 @@
                                <label>Pronoun*</label>
                                <div class="civilite">
                                    <label class="radio-container">
-                                       <input type="radio" name="civilite" value="madame" checked>
+                                       <input type="radio" name="civilite" value="Ms" checked>
                                        <span class="custom-radio"></span>
-                                       Madame
+                                       Ms
                                    </label>
 
                                    <label class="radio-container">
-                                       <input type="radio" name="civilite" value="mademoiselle">
+                                       <input type="radio" name="civilite" value="Mms">
                                        <span class="custom-radio"></span>
-                                       Mademoiselle
+                                       Mms
                                    </label>
 
                                    <label class="radio-container">
-                                       <input type="radio" name="civilite" value="monsieur">
+                                       <input type="radio" name="civilite" value="Mr">
                                        <span class="custom-radio"></span>
-                                       Monsieur
+                                       Mr
                                    </label>
                                </div>
                            </div>
@@ -133,7 +133,14 @@
 
                             <div class="form-element">
                                 <label >Salary per month*</label>
-                                <input id="salaryPerMOnthINput" class="inputs" type="text">
+                                <input id="salaryPerMonthInput" class="inputs" type="text">
+                            </div>
+                            <div class="form-element" id="terms-container">
+                                <input type="checkbox" id="termsInput">
+                                <p class="terms">I have read and accept the <span>general terms and conditions </span> of use listed in the legal information, including the provision regarding the protection of personal data</p>
+                            </div>
+                            <div class="btn-container">
+                                <button id="third-phase-submit" class="submit-btn">Request Loan</button>
                             </div>
                         </div>
                     </form>
