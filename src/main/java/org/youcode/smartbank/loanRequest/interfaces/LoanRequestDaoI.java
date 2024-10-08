@@ -1,4 +1,7 @@
 package org.youcode.smartbank.loanRequest.interfaces;
 
-public class LoanRequestDaoI {
+import org.youcode.smartbank.loanRequest.LoanRequest;
+import org.youcode.smartbank.shared.interfaces.GenericDaoI;
+
+public interface LoanRequestDaoI extends GenericDaoI<LoanRequest> {
 }
