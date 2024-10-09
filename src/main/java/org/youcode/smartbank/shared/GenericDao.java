@@ -24,6 +24,7 @@ public class GenericDao<T> implements GenericDaoI<T>{
         em.persist(entity);
         em.flush();
     }
+
     public void update(T entity){
         EntityManager em = EntityManagerContext.getEntityManager();
         em.merge(entity);
@@ -37,6 +38,7 @@ public class GenericDao<T> implements GenericDaoI<T>{
         EntityManager em = EntityManagerContext.getEntityManager();
         return Optional.ofNullable(em.find(entityClass, id));
     }
+
     public void delete(T entity){
         EntityManager em = EntityManagerContext.getEntityManager();
         em.remove(em.contains(entity) ? entity : em.merge(entity));

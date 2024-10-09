@@ -1,16 +1,18 @@
 package org.youcode.smartbank.loanRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import org.youcode.smartbank.loanRequestState.LoanRequestState;
 import org.youcode.smartbank.shared.BaseEntity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Table(name = "LOAN_REQUEST")
 public class LoanRequest extends BaseEntity {
-
     @Column(name = "PROJECT")
     private String project;
 
@@ -50,6 +52,15 @@ public class LoanRequest extends BaseEntity {
 
     @Column(name = "SALARY_PER_MONTH")
     private  double salaryPerMonth;
+
+    @Column(name = "TAX")
+    private double tax;
+
+    @Column(name = "PRONOUN")
+    private String pronoun;
+
+    @OneToMany(mappedBy = "loanRequest")
+    private Set<LoanRequestState> requestStates;
 
 
     public String getProject() {
@@ -156,4 +167,19 @@ public class LoanRequest extends BaseEntity {
         this.salaryPerMonth = salaryPerMonth;
     }
 
+    public double getTax(){
+        return tax;
+    }
+
+    public void setTax(double tax){
+        this.tax = tax;
+    }
+
+    public String getPronoun(){
+        return pronoun;
+    }
+
+    public void setPronoun(String pronoun){
+        this.pronoun = pronoun;
+    }
 }
