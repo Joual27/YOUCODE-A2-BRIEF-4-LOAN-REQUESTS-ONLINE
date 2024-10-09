@@ -13,6 +13,8 @@ const thirdStep = document.getElementById('step3')
 
 const pronounValue = document.querySelector('input[name="civilite"]:checked').value;
 const firstNameInput = document.getElementById('firstNameInput')
+const emailInput = document.getElementById('emailInput')
+const phoneInput = document.getElementById('phoneInput')
 const familyNameInput = document.getElementById('familyNameInput')
 const CINInput = document.getElementById('CINInput')
 const birthdayInput = document.getElementById('birthdayInput')
@@ -20,21 +22,20 @@ const dateOfWorkInput = document.getElementById('dateOfWorkInput')
 const salaryPerMonthInput = document.getElementById('salaryPerMonthInput')
 const termsInput = document.getElementById('termsInput')
 
-const firstPhaseDataHolder = document.getElementById('first-phase-data-holder');
 
 const loanRequestData = {
     project : '',
-    requesterField : '',
+    currentPosition : '',
     amount : 0,
-    numberOfMonths : 0 ,
+    durationInMonths : 0 ,
     toPayPerMonth : 0,
     tax : 0 ,
     email : '',
     phoneNumber : '',
     pronoun : '',
     firstName : '',
-    lastName : '',
-    CIN : '',
+    familyName : '',
+    idCardNumber : '',
     birthday : '',
     dateOfWork : '',
     salaryPerMonth : 0
@@ -43,17 +44,17 @@ const loanRequestData = {
 
 const clearRequestData = () => {
     loanRequestData.project = '';
-    loanRequestData.requesterField = '';
+    loanRequestData.currentPosition = '';
     loanRequestData.amount = 0;
-    loanRequestData.numberOfMonths = 0;
+    loanRequestData.durationInMonths = 0;
     loanRequestData.toPayPerMonth = 0;
     loanRequestData.tax = 0;
     loanRequestData.email = '';
     loanRequestData.phoneNumber = '';
     loanRequestData.pronoun = '';
     loanRequestData.firstName = '';
-    loanRequestData.lastName = '';
-    loanRequestData.CIN = '';
+    loanRequestData.familyName = '';
+    loanRequestData.idCardNumber = '';
     loanRequestData.birthday = '';
     loanRequestData.dateOfWork = '';
     loanRequestData.salaryPerMonth = 0;
@@ -76,11 +77,11 @@ submitSecondPhaseBtn.addEventListener('click' , (e) => {
     }
 
     else{
-        if (!validateInput(emailInput.value , 'email') == ""){
+        if (!validateInput(emailInput.value , 'email') === ""){
             errors.push(validateInput(emailInput , 'email'))
         }
 
-        if (!validateInput(phoneInput.value , 'phone') == ""){
+        if (!validateInput(phoneInput.value , 'phone') === ""){
             errors.push(validateInput(phoneInput , 'phone'))
         }
     }
@@ -102,9 +103,9 @@ submitSecondPhaseBtn.addEventListener('click' , (e) => {
 submitFirstPhaseBtn.addEventListener('click' , (e) => {
     e.preventDefault();
     loanRequestData.project = project.value;
-    loanRequestData.requesterField = requesterField.value;
+    loanRequestData.currentPosition = requesterField.value;
     loanRequestData.amount = loanAmountHolder.value;
-    loanRequestData.numberOfMonths = loanDurationInput.value;
+    loanRequestData.durationInMonths = loanDurationInput.value;
     loanRequestData.toPayPerMonth = toPayPerMonthHolder.value;
     loanRequestData.tax = loanRequestData.amount * 0.022;
     phase = 2 ;
@@ -173,7 +174,7 @@ const appendFirstPhaseDataToEstimate = () => {
         </tr>
         <tr>
             <td class="estimate-keys">You Are:</td>
-            <td class="estimate-values"><strong>${convertRequesterField(loanRequestData.requesterField)}</strong></td>
+            <td class="estimate-values"><strong>${convertRequesterField(loanRequestData.currentPosition)}</strong></td>
         </tr>
         <tr>
             <td class="estimate-keys">Amount:</td>
@@ -181,7 +182,7 @@ const appendFirstPhaseDataToEstimate = () => {
         </tr>
         <tr>
             <td class="estimate-keys">Duration:</td>
-            <td class="estimate-values"><strong>${loanRequestData.numberOfMonths} Months</strong></td>
+            <td class="estimate-values"><strong>${loanRequestData.durationInMonths} Months</strong></td>
         </tr>
         <tr>
             <td class="estimate-keys">To Pay Per Month:</td>
@@ -298,6 +299,9 @@ submitThirdPhaseBtn.addEventListener('click' , (e) => {
         if (validateInput(dateOfWorkInput.value , 'date') !== ''){
             errs.push('INVALID DATE OF WORK FORMAT !')
         }
+        else if(!validateWorkDate(dateOfWorkInput.value)){
+            errs.push('Work Date should be before current time !')
+        }
         if (salaryPerMonthInput.value < 0){
             errs.push("SALARY CAN'T BE NEGATIVE VALUE !")
         }
@@ -312,19 +316,20 @@ submitThirdPhaseBtn.addEventListener('click' , (e) => {
     else{
         loanRequestData.pronoun = pronounValue;
         loanRequestData.firstName = firstNameInput.value;
-        loanRequestData.lastName = familyNameInput.value;
+        loanRequestData.familyName = familyNameInput.value;
         loanRequestData.birthday = convertToDate(birthdayInput.value)
         loanRequestData.dateOfWork = convertToDate(dateOfWork.value)
-        loanRequestData.CIN  = CINInput.value;
+        loanRequestData.idCardNumber  = CINInput.value;
         loanRequestData.salaryPerMonth = salaryPerMonthInput.value;
         console.log('clean data' + Object.values(loanRequestData))
+        handleLoanRequestCreation();
     }
 })
 
 
 
 const validateBirthdayDate = (birthday) => {
-    let enteredDate = convertToDate(birthday)
+    let enteredDate = new Date(convertToDate(birthday));
     let currentDate = new Date()
 
     currentDate.setHours(0, 0, 0, 0);
@@ -338,10 +343,21 @@ const validateBirthdayDate = (birthday) => {
 }
 
 
+const validateWorkDate = (workDate) => {
+    let enteredDate = new Date(convertToDate(workDate));
+    let currentDate = new Date()
+
+    currentDate.setHours(0, 0, 0, 0);
+    enteredDate.setHours(0, 0, 0, 0);
+
+    return enteredDate < currentDate;
+}
+
+
 const convertToDate = (target) => {
     let [d , m , y] = target.split('-').map(Number)
 
-    return new Date(y , m-1 , d)
+    return `${y}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
 }
 
 
@@ -446,4 +462,29 @@ const removeSecondPhaseDataFromEstimate = () => {
         }
     }
 };
+
+
+
+const handleLoanRequestCreation = () => {
+    let xhr = new XMLHttpRequest();
+    let targetURL = "http://localhost:8080/smart-bank/loan/request/create";
+    xhr.open("POST" , targetURL , true);
+
+    xhr.setRequestHeader("Content-Type"  , "application/json")
+
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState === XMLHttpRequest.DONE){
+            console.log("Response Text:", xhr.responseText);
+            if (xhr.status === 200){
+               const response = JSON.parse(xhr.responseText)
+                console.log(response);
+            }
+            else {
+                console.error("Error:", xhr.status, xhr.statusText);
+            }
+        }
+    }
+
+    xhr.send(JSON.stringify(loanRequestData));
+}
 
