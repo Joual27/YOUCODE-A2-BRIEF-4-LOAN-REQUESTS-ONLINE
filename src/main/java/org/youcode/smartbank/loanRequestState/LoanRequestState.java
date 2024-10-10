@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 
 @Entity
+@Table(name = "LOAN_REQUEST_STATE")
 public class LoanRequestState extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "LOAN_REQUEST_ID")

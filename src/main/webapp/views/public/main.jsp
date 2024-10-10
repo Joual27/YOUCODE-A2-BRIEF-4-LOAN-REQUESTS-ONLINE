@@ -177,6 +177,21 @@
          </div>
     </div>
 
+    <div id="success-notification" class="errors-bg hidden" >
+        <div class="request-notification">
+            <div class="notification-icon-holder">
+                <img src="${pageContext.request.contextPath}/resources/imgs/notif.png" alt="">
+            </div>
+            <div class="notification-msgs">
+                <p class="notif-main-msg">Saved Successfully</p>
+                <p class="notif-msg">Your Loan Request is <span>Pending</span> ! wait for admin</p>
+            </div>
+            <div class="notification-close">
+                <img id="close-notif" src="${pageContext.request.contextPath}/resources/imgs/close.png" alt="">
+            </div>
+        </div>
+    </div>
+
     <script src="${pageContext.request.contextPath}/resources/js/calculations.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/validations.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/phasesHandling.js"></script>

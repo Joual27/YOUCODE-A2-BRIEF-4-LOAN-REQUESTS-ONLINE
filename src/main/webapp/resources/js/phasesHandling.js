@@ -478,6 +478,7 @@ const handleLoanRequestCreation = () => {
             if (xhr.status === 200){
                const response = JSON.parse(xhr.responseText)
                 console.log(response);
+               handleSuccessNotification();
             }
             else {
                 console.error("Error:", xhr.status, xhr.statusText);
@@ -488,3 +489,14 @@ const handleLoanRequestCreation = () => {
     xhr.send(JSON.stringify(loanRequestData));
 }
 
+const handleSuccessNotification = () =>{
+    document.getElementById("success-notification").classList.remove("hidden")
+    setTimeout(() => {
+        document.getElementById("success-notification").classList.add("hidden")
+    }, 4000)
+}
+
+document.getElementById("close-notif").addEventListener("click" , () => {
+    const notification = document.getElementById("success-notification")
+    notification.classList.add("hidden");
+})
