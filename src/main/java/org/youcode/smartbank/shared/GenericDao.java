@@ -12,7 +12,7 @@ import java.util.Optional;
 @Transactional
 public class GenericDao<T> implements GenericDaoI<T>{
 
-    private Class<T> entityClass;
+    private final Class<T> entityClass;
 
     public GenericDao(Class<T> entityClass){
         this.entityClass = entityClass;
@@ -21,6 +21,7 @@ public class GenericDao<T> implements GenericDaoI<T>{
     @Override
     public void save(T entity){
         EntityManager em = EntityManagerContext.getEntityManager();
+        System.out.println("Using EntityManager in DAO: " + (em != null));
         em.persist(entity);
         em.flush();
     }

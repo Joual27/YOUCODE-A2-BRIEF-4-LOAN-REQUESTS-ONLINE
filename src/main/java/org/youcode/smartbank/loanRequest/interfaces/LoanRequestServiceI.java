@@ -5,10 +5,9 @@ import org.youcode.smartbank.loanRequest.LoanRequest;
 import java.util.List;
 
 public interface LoanRequestServiceI {
-    List<LoanRequest> getAllLoanRequests();
+//    List<LoanRequest> getAllLoanRequests();
     LoanRequest saveLoanRequest(LoanRequest loanRequest);
-//    LoanRequest updateLoanRequest(LoanRequest loanRequest);
-//    LoanRequest deleteLoanRequest()
-    boolean isValidToPayPerMonth(LoanRequest loanRequest, double overallAmount, int months);
+
+    boolean isValidToPayPerMonth(double initialMonthlyPayment, double overallAmount, int months);
     double calculateToPayPerMonth(double overallAmount , int months);
 }
