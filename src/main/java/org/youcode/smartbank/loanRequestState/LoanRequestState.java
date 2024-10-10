@@ -1,5 +1,6 @@
 package org.youcode.smartbank.loanRequestState;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import org.youcode.smartbank.loanRequest.LoanRequest;
 import org.youcode.smartbank.shared.BaseEntity;
@@ -10,6 +11,8 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "LOAN_REQUEST_STATE")
 public class LoanRequestState extends BaseEntity {
+
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "LOAN_REQUEST_ID")
     private LoanRequest loanRequest;

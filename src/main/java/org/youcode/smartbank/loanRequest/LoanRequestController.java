@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.cert.CRLException;
 import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @WebServlet(name = "loanSimulation" , urlPatterns = {"/loan/request/create"})
 public class LoanRequestController extends HttpServlet {
@@ -54,13 +56,14 @@ public class LoanRequestController extends HttpServlet {
             loanRequestStateToCreate.setState(s);
             loanRequestStateToCreate.setLoanRequest(createdLoanRequest);
             loanRequestStateToCreate.setCreatedAt(LocalDateTime.now());
+
+            Set<LoanRequestState> loanRequestStates = new LinkedHashSet<>();
+            loanRequestStates.add(loanRequestStateToCreate);
+            loanRequestToCreate.setRequestStates(loanRequestStates);
             LoanRequestState createdLoanRequestState = loanRequestStateService.save(loanRequestStateToCreate);
-
             res.setStatus(HttpServletResponse.SC_OK);
-
             String responseAsJson = objectMapper.writeValueAsString(createdLoanRequest);
             out.write(responseAsJson);
-
         } catch (Exception e){
             res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             out.write("{\"message\":\"" + e.getMessage() +"\"}");

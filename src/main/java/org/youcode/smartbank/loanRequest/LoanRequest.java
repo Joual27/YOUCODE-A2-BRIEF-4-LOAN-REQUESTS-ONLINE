@@ -1,4 +1,5 @@
 package org.youcode.smartbank.loanRequest;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -59,6 +60,7 @@ public class LoanRequest extends BaseEntity {
     @Column(name = "PRONOUN")
     private String pronoun;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "loanRequest")
     private Set<LoanRequestState> requestStates;
 
@@ -181,5 +183,13 @@ public class LoanRequest extends BaseEntity {
 
     public void setPronoun(String pronoun){
         this.pronoun = pronoun;
+    }
+
+    public Set<LoanRequestState> getRequestStates() {
+        return requestStates;
+    }
+
+    public void setRequestStates(Set<LoanRequestState> requestStates) {
+        this.requestStates = requestStates;
     }
 }
