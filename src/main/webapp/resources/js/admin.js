@@ -1,4 +1,6 @@
 let data = [];
+const contextPath = "${pageContext.request.contextPath}";
+
 
 
 const fetchAllLoanRequests = (response) => {
@@ -12,10 +14,10 @@ const fetchAllLoanRequests = (response) => {
             <td>${item.amount}</td>
             <td>${item.durationInMonths}</td>
             <td>${item.toPayPerMonth}</td>
-            <th>${handleState(item.requestStates[0].state.state)}</th>
+            <th>${handleState(item.requestStates)}</th>
             <td class="admin-actions">
-                <img data-id="${item.id}" src="${pageContext.request.contextPath}/resources/imgs/more.png" alt="">
-                <img data-id="${item.id}" src="${pageContext.request.contextPath}/resources/imgs/history.png" alt="">
+                <img data-id="${item.id}" src="${window.contextPath}/resources/imgs/more.png" alt="">
+                <img data-id="${item.id}" src="${window.contextPath}/resources/imgs/history.png" alt="">
             </td>
         `;
          requestsTable.appendChild(row);
@@ -34,9 +36,9 @@ const getAllLoanRequests = () => {
                 const response = JSON.parse(xhr.responseText);
                 fetchAllLoanRequests(response);
             }
-        }
-        else{
-            console.error("error" , xhr.status , xhr.statusText);
+            else{
+                console.error("error" , xhr.status , xhr.statusText);
+            }
         }
     }
     xhr.send();
@@ -59,17 +61,35 @@ const handleOccupation = (occupation) => {
     }
 }
 
-const handleState = (state) =>{
-    switch (state){
-        case "PENDING":
-            return "<div class='status pending'><p>Pending</p></div>"
-        case "ACCEPTED":
-            return "<div class='status accepted'><p>Accepted</p></div>"
-        case "REJECTED":
-            return "<div class='status rejected'><p>Rejected</p></div>"
-        case "REJECTED_BY_CUSTOMER":
-            return "<div class='status rejected'><p>Rejected By Customer</p></div>"
+const handleState = (allRequestStates) =>{
+
+    if (allRequestStates.length ===  1){
+        switch (allRequestStates[0].state){
+            case 1:
+                return "<div class='status pending'><p>Pending</p></div>"
+            case 2:
+                return "<div class='status accepted'><p>Accepted</p></div>"
+            case 3:
+                return "<div class='status rejected'><p>Rejected</p></div>"
+            case 4:
+                return "<div class='status rejected'><p>Rejected By Customer</p></div>"
+        }
     }
+    else{
+        switch (allRequestStates[0].state.state){
+            case "PENDING":
+                return "<div class='status pending'><p>Pending</p></div>"
+            case "ACCEPTED":
+                return "<div class='status accepted'><p>Accepted</p></div>"
+            case "REJECTED":
+                return "<div class='status rejected'><p>Rejected</p></div>"
+            case "REJECTED_BY_CUSTOMER":
+                return "<div class='status rejected'><p>Rejected By Customer</p></div>"
+
+        }
+
+    }
+
 }
 
 getAllLoanRequests();

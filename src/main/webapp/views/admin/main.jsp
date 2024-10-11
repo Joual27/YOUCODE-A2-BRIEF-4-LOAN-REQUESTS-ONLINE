@@ -33,6 +33,16 @@
         </table>
     </div>
 
+    <div class="loan-request-data-container">
+        <div class="loan-request-data">
+            <div class="loan-request-data-header">
+                <p>Request 21231</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        window.contextPath = "${pageContext.request.contextPath}";
+    </script>
     <script src="${pageContext.request.contextPath}/resources/js/admin.js"></script>
 </body>
 </html>

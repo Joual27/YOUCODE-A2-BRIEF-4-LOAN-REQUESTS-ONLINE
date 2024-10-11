@@ -45,17 +45,17 @@ public class LoanRequestService implements LoanRequestServiceI {
         return calculateToPayPerMonth(overallAmount,months) == initialMonthlyPayment;
     }
 
-    @Override
-    public List<LoanRequest> appendStatesOfLoanRequests(List<LoanRequest> loanRequests){
-       return loanRequests.stream()
-                .map(loanRequest -> {
-                    List<LoanRequestState> states = loanRequestStateService.getStatesOfLoanRequest(loanRequest);
-                    Set<LoanRequestState> statesOfLoanRequest = states.stream()
-                            .sorted(Comparator.comparing(LoanRequestState::getCreatedAt).reversed())
-                            .collect(Collectors.toCollection(LinkedHashSet::new));
-                    loanRequest.setRequestStates(statesOfLoanRequest);
-                    return loanRequest;
-                }).collect(Collectors.toList());
-    }
+        @Override
+        public List<LoanRequest> appendStatesOfLoanRequests(List<LoanRequest> loanRequests){
+           return loanRequests.stream()
+                    .map(loanRequest -> {
+                        List<LoanRequestState> states = loanRequestStateService.getStatesOfLoanRequest(loanRequest);
+                        Set<LoanRequestState> statesOfLoanRequest = states.stream()
+                                .sorted(Comparator.comparing(LoanRequestState::getCreatedAt).reversed())
+                                .collect(Collectors.toCollection(LinkedHashSet::new));
+                        loanRequest.setRequestStates(statesOfLoanRequest);
+                        return loanRequest;
+                    }).collect(Collectors.toList());
+        }
 
 }

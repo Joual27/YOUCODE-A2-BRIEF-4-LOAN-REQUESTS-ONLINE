@@ -1,6 +1,7 @@
 package org.youcode.smartbank.admin;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -38,11 +39,14 @@ public class AdminController extends HttpServlet {
 
     private void handleFetchAllRequests(HttpServletRequest req , HttpServletResponse res) throws ServletException , IOException{
         PrintWriter out = res.getWriter();
+        res.setContentType("application/json");
         try{
             ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
             List<LoanRequest> loanRequests = loanRequestService.getAllLoanRequests();
             List<LoanRequest> loanRequestsWithStates = loanRequestService.appendStatesOfLoanRequests(loanRequests);
             String loanRequestsWithStatesAsJson = objectMapper.writeValueAsString(loanRequestsWithStates);
+            System.out.println(loanRequestsWithStates);
             out.write(loanRequestsWithStatesAsJson);
         }
         catch (Exception e){

@@ -1,13 +1,13 @@
 package org.youcode.smartbank.loanRequest;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import jakarta.persistence.*;
 import org.youcode.smartbank.loanRequestState.LoanRequestState;
 import org.youcode.smartbank.shared.BaseEntity;
 
-import java.io.Serializable;
+
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -61,7 +61,7 @@ public class LoanRequest extends BaseEntity {
     private String pronoun;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "loanRequest")
+    @OneToMany(mappedBy = "loanRequest", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<LoanRequestState> requestStates;
 
 
