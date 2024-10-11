@@ -33,8 +33,9 @@ public class GenericDao<T> implements GenericDaoI<T>{
     }
     public List<T> findAll(){
         EntityManager em = EntityManagerContext.getEntityManager();
-        return em.createQuery("from " + entityClass.getName(), entityClass).getResultList();
+        return em.createQuery("SELECT e FROM " + entityClass.getName() + " e", entityClass).getResultList();
     }
+
     public Optional<T> findById(Long id){
         EntityManager em = EntityManagerContext.getEntityManager();
         return Optional.ofNullable(em.find(entityClass, id));
