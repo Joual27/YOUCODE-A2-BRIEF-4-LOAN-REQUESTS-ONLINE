@@ -1,12 +1,9 @@
 package org.youcode.smartbank.loanRequest;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import org.youcode.smartbank.loanRequestState.LoanRequestState;
 import org.youcode.smartbank.shared.BaseEntity;
-
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -59,6 +56,9 @@ public class LoanRequest extends BaseEntity {
 
     @Column(name = "PRONOUN")
     private String pronoun;
+
+    @Column(name = "CREATED_AT")
+    private LocalDate createdAt;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "loanRequest", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -191,5 +191,13 @@ public class LoanRequest extends BaseEntity {
 
     public void setRequestStates(Set<LoanRequestState> requestStates) {
         this.requestStates = requestStates;
+    }
+
+    public LocalDate getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
     }
 }
