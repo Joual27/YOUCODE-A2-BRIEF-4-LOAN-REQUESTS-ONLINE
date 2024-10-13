@@ -12,7 +12,23 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin.css">
 </head>
 <body>
+    <div class="filters">
+        <div class="filter-item">
+            <label>Filter By Date :</label>
+            <input type="date" id="date-filter">
+        </div>
+        <div class="filter-item">
+            <label>Filter By State :</label>
+            <select id="state-filter">
+                <option value="">Select a state</option>
+                <option value="PENDING">Pending</option>
+                <option value="ACCEPTED">Accepted</option>
+                <option value="REJECTED">Rejected</option>
+                <option value="REJECTED_BY_CUSTOMER">Rejected By Customer</option>
+            </select>
+        </div>
 
+    </div>
     <div class="table-container">
         <table class="order-table">
             <thead>
@@ -33,13 +49,14 @@
         </table>
     </div>
 
-    <div class="loan-request-data-container">
-        <div class="loan-request-data">
-            <div class="loan-request-data-header">
-                <p>Request 21231</p>
-            </div>
-        </div>
+    <div id="loan-request-data-container" class="loan-request-data-container hidden">
+
     </div>
+
+    <div id="loan-request-state-history-container" class="loan-request-state-history-container hidden">
+
+    </div>
+
     <script>
         window.contextPath = "${pageContext.request.contextPath}";
     </script>

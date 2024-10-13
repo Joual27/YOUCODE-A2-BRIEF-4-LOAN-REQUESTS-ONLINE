@@ -9,7 +9,6 @@ public class HibernateUtil {
     private static HibernateUtil instance;
     private EntityManagerFactory entityManagerFactory;
 
-
     private HibernateUtil() {
         entityManagerFactory = Persistence.createEntityManagerFactory("smartbank_db");
     }

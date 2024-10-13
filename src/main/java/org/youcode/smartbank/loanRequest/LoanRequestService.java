@@ -7,6 +7,7 @@ import org.youcode.smartbank.loanRequest.interfaces.LoanRequestServiceI;
 import org.youcode.smartbank.loanRequestState.LoanRequestState;
 import org.youcode.smartbank.loanRequestState.interfaces.LoanRequestStateServiceI;
 
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -45,17 +46,27 @@ public class LoanRequestService implements LoanRequestServiceI {
         return calculateToPayPerMonth(overallAmount,months) == initialMonthlyPayment;
     }
 
-        @Override
-        public List<LoanRequest> appendStatesOfLoanRequests(List<LoanRequest> loanRequests){
-           return loanRequests.stream()
-                    .map(loanRequest -> {
-                        List<LoanRequestState> states = loanRequestStateService.getStatesOfLoanRequest(loanRequest);
-                        Set<LoanRequestState> statesOfLoanRequest = states.stream()
-                                .sorted(Comparator.comparing(LoanRequestState::getCreatedAt).reversed())
-                                .collect(Collectors.toCollection(LinkedHashSet::new));
-                        loanRequest.setRequestStates(statesOfLoanRequest);
-                        return loanRequest;
-                    }).collect(Collectors.toList());
-        }
+    @Override
+    public List<LoanRequest> appendStatesOfLoanRequests(List<LoanRequest> loanRequests){
+        return loanRequests.stream()
+                .map(loanRequest -> {
+                    List<LoanRequestState> states = loanRequestStateService.getStatesOfLoanRequest(loanRequest);
+                    Set<LoanRequestState> statesOfLoanRequest = states.stream()
+                            .sorted(Comparator.comparing(LoanRequestState::getCreatedAt).reversed())
+                            .collect(Collectors.toCollection(LinkedHashSet::new));
+                    loanRequest.setRequestStates(statesOfLoanRequest);
+                    return loanRequest;
+                }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<LoanRequest> getLoanRequestsByState(String state){
+        return loanRequestDao.findLoanRequestsByState(state);
+    }
+
+    @Override
+    public List<LoanRequest> getLoanRequestsByDate(LocalDate date) {
+        return loanRequestDao.findLoanRequestsByDate(date);
+    }
 
 }

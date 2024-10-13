@@ -38,7 +38,8 @@ const loanRequestData = {
     idCardNumber : '',
     birthday : '',
     dateOfWork : '',
-    salaryPerMonth : 0
+    salaryPerMonth : 0,
+    createdAt : ''
 }
 
 
@@ -108,6 +109,7 @@ submitFirstPhaseBtn.addEventListener('click' , (e) => {
     loanRequestData.durationInMonths = loanDurationInput.value;
     loanRequestData.toPayPerMonth = toPayPerMonthHolder.value;
     loanRequestData.tax = loanRequestData.amount * 0.022;
+    loanRequestData.createdAt = getCurrentTime();
     phase = 2 ;
     handleActiveStep(2)
     handlePhases();
@@ -485,7 +487,6 @@ const handleLoanRequestCreation = () => {
             }
         }
     }
-
     xhr.send(JSON.stringify(loanRequestData));
 }
 
@@ -500,3 +501,16 @@ document.getElementById("close-notif").addEventListener("click" , () => {
     const notification = document.getElementById("success-notification")
     notification.classList.add("hidden");
 })
+
+const getCurrentTime = () => {
+    const now = new Date();
+
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const hour = String(now.getHours()).padStart(2, '0');
+    const minute = String(now.getMinutes()).padStart(2, '0');
+    const second = String(now.getSeconds()).padStart(2, '0');
+
+    return `${year}-${month}-${day}T${hour}:${minute}:${second}`;
+};
