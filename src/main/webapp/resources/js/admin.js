@@ -184,6 +184,7 @@ const fetchFullRequestData = (id) => {
         `
         requestDataHolder.classList.remove("hidden");
     }
+
 }
 
 requestsTable.addEventListener("click" ,(e) => {

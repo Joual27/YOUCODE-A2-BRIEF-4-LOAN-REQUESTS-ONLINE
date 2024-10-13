@@ -57,6 +57,9 @@
 
     </div>
 
+    <div class="update-loan-request-state" id="update-loan-request-state">
+
+    </div>
     <script>
         window.contextPath = "${pageContext.request.contextPath}";
     </script>
