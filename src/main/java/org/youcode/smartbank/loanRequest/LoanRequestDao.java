@@ -2,7 +2,6 @@ package org.youcode.smartbank.loanRequest;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import org.youcode.smartbank.loanRequest.interfaces.LoanRequestDaoI;
 import org.youcode.smartbank.shared.GenericDao;
@@ -10,7 +9,6 @@ import org.youcode.smartbank.utils.EntityManagerContext;
 
 import java.time.LocalDate;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @ApplicationScoped

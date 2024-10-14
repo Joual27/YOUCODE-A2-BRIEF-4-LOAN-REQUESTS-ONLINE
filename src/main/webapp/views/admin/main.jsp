@@ -57,8 +57,25 @@
 
     </div>
 
-    <div class="update-loan-request-state" id="update-loan-request-state">
-
+    <div class="update-loan-request-state hidden" id="update-loan-request-state">
+         <div class="update-loan-request-state-form">
+             <div class="update-loan-request-state-header">
+                 <p>Update state</p>
+                 <img id="close-update-loan-request-state" src="${pageContext.request.contextPath}/resources/imgs/close.png" alt="">
+             </div>
+             <p>Please choose the new State :</p>
+             <select id="update-state-options">
+                 <option value="ACCEPTED">Accepted</option>
+                 <option value="PENDING">Pending</option>
+                 <option value="REJECTED">Rejected</option>
+                 <option value="REJECTED_BY_CUSTOMER">Rejected By Customer</option>
+             </select>
+             <input type="text" placeholder="Explanation :" class="hidden" id="explanation">
+             <p id="update-success"></p>
+             <div class="submit-update-state hidden" id="submit-update-state-holder">
+                 <button id="update-state">Update</button>
+             </div>
+         </div>
     </div>
     <script>
         window.contextPath = "${pageContext.request.contextPath}";
