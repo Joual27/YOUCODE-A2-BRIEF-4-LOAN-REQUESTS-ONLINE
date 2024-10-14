@@ -18,7 +18,7 @@ public class LoanRequestStateDao extends GenericDao<LoanRequestState> implements
        super(LoanRequestState.class);
    }
 
-   @Override
+    @Override
     public List<LoanRequestState> findByLoanRequest(LoanRequest loanRequest){
         EntityManager em = EntityManagerContext.getEntityManager();
         TypedQuery<LoanRequestState> query = em.createQuery(

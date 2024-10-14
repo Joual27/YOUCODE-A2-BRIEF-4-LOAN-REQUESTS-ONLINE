@@ -16,4 +16,6 @@ public interface LoanRequestServiceI {
     List<LoanRequest> getLoanRequestsByState(String state);
 
     List<LoanRequest> getLoanRequestsByDate(LocalDate date);
+
+    LoanRequest getLoanRequestById(Long id);
 }

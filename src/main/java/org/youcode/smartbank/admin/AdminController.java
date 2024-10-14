@@ -1,6 +1,7 @@
 package org.youcode.smartbank.admin;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
@@ -8,13 +9,20 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.youcode.smartbank.exceptions.LoanRequestNotFoundException;
 import org.youcode.smartbank.loanRequest.LoanRequest;
 import org.youcode.smartbank.loanRequest.interfaces.LoanRequestServiceI;
+import org.youcode.smartbank.loanRequestState.LoanRequestState;
+import org.youcode.smartbank.loanRequestState.interfaces.LoanRequestStateServiceI;
+import org.youcode.smartbank.state.State;
+import org.youcode.smartbank.state.interfaces.StateServiceI;
+import org.youcode.smartbank.utils.LoanRequestStateRequest;
 
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +37,10 @@ public class AdminController extends HttpServlet {
 
     @Inject
     LoanRequestServiceI loanRequestService;
+    @Inject
+    StateServiceI stateService;
+    @Inject
+    LoanRequestStateServiceI loanRequestStateService;
 
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException , IOException{
@@ -57,7 +69,9 @@ public class AdminController extends HttpServlet {
             case "/loan/request/filter/by/date":
                 handleFilteringByDate(req, res);
                 break;
-
+            case "/loan/request/update/state":
+                handleUpdatingLoanRequestState(req,res);
+                break;
         }
     }
 
@@ -123,5 +137,46 @@ public class AdminController extends HttpServlet {
             out.close();
         }
     }
+
+    private void handleUpdatingLoanRequestState(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        res.setContentType("application/json; charset=UTF-8");
+        PrintWriter out = res.getWriter();
+
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            LoanRequestStateRequest requestData = objectMapper.readValue(req.getInputStream(), LoanRequestStateRequest.class);
+            Long loanRequestId = requestData.getId();
+            String state = requestData.getState();
+            String explanation = requestData.getExplanation();
+
+
+            LoanRequest loanRequestToUpdate = loanRequestService.getLoanRequestById(loanRequestId);
+            State newState = stateService.getStateByName(state);
+
+            LoanRequestState loanRequestStateToCreate = new LoanRequestState();
+            loanRequestStateToCreate.setLoanRequest(loanRequestToUpdate);
+            loanRequestStateToCreate.setState(newState);
+            loanRequestStateToCreate.setCreatedAt(LocalDateTime.now());
+            loanRequestStateToCreate.setExplanation(explanation);
+
+            res.setStatus(HttpServletResponse.SC_OK);
+            LoanRequestState createdLoanRequestState = loanRequestStateService.save(loanRequestStateToCreate);
+
+            ObjectNode node = objectMapper.createObjectNode();
+            node.put("id", loanRequestToUpdate.getId());
+            out.print(objectMapper.writeValueAsString(node));
+        } catch (LoanRequestNotFoundException e) {
+            res.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            out.print(e.getMessage());
+        } catch (Exception e) {
+            res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            out.print(e.getMessage());
+        } finally {
+            out.flush();
+            out.close();
+        }
+    }
+
+
 
 }

@@ -1,13 +1,18 @@
 let data = [];
-const contextPath = "${pageContext.request.contextPath}";
 const requestsTable = document.getElementById("requests-table");
 const requestDataHolder = document.getElementById("loan-request-data-container");
 const requestStatesHistoryHolder = document.getElementById("loan-request-state-history-container");
 const dateInput = document.getElementById('date-filter');
 const stateFilter = document.getElementById("state-filter");
-const emptyRes = document.getElementById("empty-filter");
+const currentStateValue = document.getElementById("update-state-options");
+const updateStateForm = document.getElementById("update-loan-request-state");
+const closeUpdateStateForm = document.getElementById("close-update-loan-request-state");
+const explanation = document.getElementById("explanation");
+const updateStateBtn = document.getElementById("update-state");
+const submitUpdateStateHolder = document.getElementById("submit-update-state-holder");
+const updateSuccess = document.getElementById("update-success");
 
-
+let loanRequestToUpdate = 0;
 const fetchAllLoanRequests = (response) => {
      requestsTable.innerHTML = "";
      response.forEach(item => {
@@ -206,6 +211,13 @@ requestsTable.addEventListener("click" , (e) =>{
         let id = e.target.dataset.id;
         handleFetchingRequestStatesHistory(id);
     }
+    else if(e.target.classList.contains("edit-state")){
+        updateSuccess.textContent = "";
+        explanation.value = "";
+        let id = e.target.dataset.id;
+        loanRequestToUpdate = id;
+        handleShowingUpdateStateForm(id);
+    }
 })
 
 document.addEventListener("click" ,(e) => {
@@ -285,8 +297,74 @@ const formatDate = (dateArray) => {
     return `${day}-${month}-${year}`;
 };
 
+let initialState = '';
+const handleShowingUpdateStateForm = (id) => {
+    let currentLoanRequest = data.find(item => item.id == id);
+    let currentState = currentLoanRequest.requestStates[0].state.state;
+    initialState = currentState;
+    currentStateValue.value = currentState;
+    updateStateForm.classList.remove("hidden");
+
+}
+
+closeUpdateStateForm.addEventListener("click" , () => {
+    updateStateForm.classList.add("hidden");
+})
+
+currentStateValue.addEventListener("change", (e) => {
+    if (e.target.value !== initialState){
+        explanation.classList.remove("hidden");
+        submitUpdateStateHolder.classList.remove("hidden")
+    }
+    else{
+        explanation.classList.add("hidden");
+        submitUpdateStateHolder.classList.add("hidden")
+    }
+})
+
+updateStateBtn.addEventListener("click", () => {
+    let state = currentStateValue.value;
+    let updateExplanation = explanation.value;
+    let loanRequestId = loanRequestToUpdate;
+
+    let url = "http://localhost:8080/smart-bank/loan/request/update/state";
+
+    const data = {
+        state: state,
+        explanation: updateExplanation,
+        id: loanRequestId
+    };
+
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            const res = JSON.parse(xhr.responseText);
+            if (xhr.status === 200) {
+                console.log(res);
+                updateSuccess.textContent = "Loan Request " + res.id + " updated successfully!";
+                setTimeout(() => {
+                    updateStateForm.classList.add("hidden");
+                    updateSuccess.textContent = "";
+                    explanation.value = "";
+                }, 2500);
+                getAllLoanRequests();
+            } else {
+                console.log("Err", xhr.status, xhr.statusText);
+                console.log(res);
+            }
+        }
+    };
+
+    xhr.send(JSON.stringify(data));
+});
 
 getAllLoanRequests();
+
+
 
 
 

@@ -2,16 +2,14 @@ package org.youcode.smartbank.loanRequest;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import org.youcode.smartbank.exceptions.LoanRequestNotFoundException;
 import org.youcode.smartbank.loanRequest.interfaces.LoanRequestDaoI;
 import org.youcode.smartbank.loanRequest.interfaces.LoanRequestServiceI;
 import org.youcode.smartbank.loanRequestState.LoanRequestState;
 import org.youcode.smartbank.loanRequestState.interfaces.LoanRequestStateServiceI;
 
 import java.time.LocalDate;
-import java.util.Comparator;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -67,6 +65,16 @@ public class LoanRequestService implements LoanRequestServiceI {
     @Override
     public List<LoanRequest> getLoanRequestsByDate(LocalDate date) {
         return loanRequestDao.findLoanRequestsByDate(date);
+    }
+
+    @Override
+    public LoanRequest getLoanRequestById(Long id){
+        Optional<LoanRequest> optionalLoanRequest = loanRequestDao.findById(id);
+        if (optionalLoanRequest.isPresent()) {
+            return optionalLoanRequest.get();
+        } else {
+            throw new LoanRequestNotFoundException("LoanRequest with id " + id + " not found");
+        }
     }
 
 }
